@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+}
+
+.main {
+    flex: 4;
+}
+
+.productItem {
+    display: flex;
+    align-items: center;
+}
+
+.productImg {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.productEdit {
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: #3bb077;
+    color: white;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.productDelete {
+    color: red;
+    cursor: pointer;
+}
