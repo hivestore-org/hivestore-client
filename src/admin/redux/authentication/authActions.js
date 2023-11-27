@@ -6,7 +6,7 @@ const baseUrl = 'http://localhost:5000'
 export const loginAdmin = createAsyncThunk('users/login', async (userData, thunkAPI) => {
     let authTokens = localStorage.getItem("token");
     try {
-        const res = await axios.post(`${baseUrl}/api/v1/users/admin/login`, userData, {
+        const res = await axios.post(`${import.meta.env.VITE_API_DOMAIN}/api/v1/users/admin/login`, userData, {
             headers: {
                 Authorization: `Bearer ${authTokens}`,
             }

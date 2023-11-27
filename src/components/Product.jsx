@@ -96,7 +96,7 @@ export const Product = ({ item }) => {
   // console.log(item)
   const dispatch = useDispatch();
   const addToCart = () => {
-    console.log(item)
+    
       dispatch(addCartItem({
           name: item.title,
           _id: item._id,
@@ -116,7 +116,7 @@ export const Product = ({ item }) => {
       <ToastContainer />
       <Wrap>
         <RedLabel />
-        <Image src={`http://localhost:5000/img/products/${item.image}`} />
+        <Image src={`${import.meta.env.VITE_API_DOMAIN}/img/products/${item.image}`} />
         <Info>
           <Icon onClick={addToCart}>
             <ShoppingCartOutlined />
