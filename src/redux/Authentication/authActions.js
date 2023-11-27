@@ -9,7 +9,10 @@ export const registerUser = createAsyncThunk(
     try {
       const response = await axios.post(`${baseUrl}/api/v1/users/signup`, userData);
       if (response.data) {
-        localStorage.setItem('user', JSON.stringify(response.data));
+        console.log(response);
+        localStorage.setItem('user', JSON.stringify(response.data.data));
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('tokenExpritation', response.data.exp);
         return response.data;
       }
     } catch (error) {
@@ -27,10 +30,12 @@ export const loginUser = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
       const response = await axios.post(`${baseUrl}/api/v1/users/login`, userData);
+      console.log(response)
       if (response.data) {
-        const { data, token } = response.data;
+        const { data, token, exp } = response.data;
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(data));
+        localStorage.setItem('tokenExpritation', exp);
         return data.user;
       }
     } catch (error) {

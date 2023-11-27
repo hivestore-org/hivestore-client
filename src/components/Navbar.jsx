@@ -240,8 +240,12 @@ export default function Navbar() {
         </Left>
         <Center>
           <NavList>
-            <NavListItem>Men</NavListItem>
-            <NavListItem>Women</NavListItem>
+            <Link to="/product-list/men" style={{ textDecoration: "none" }}>
+              <NavListItem>Men</NavListItem>
+            </Link>
+            <Link to="/product-list/women" style={{ textDecoration: "none" }}>
+              <NavListItem>Women</NavListItem>
+            </Link>
             <NavListItem>Accessories</NavListItem>
           </NavList>
         </Center>

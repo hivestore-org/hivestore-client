@@ -114,7 +114,7 @@ const Button = styled.button`
 
 export const Product = () => {
   const user = useSelector(state => state.auth);
-  console.log(user)
+  
   const location = useLocation(); // returns an object that contains the pathname
   const id = location.pathname.split('/')[2];
 
@@ -130,7 +130,6 @@ export const Product = () => {
           try {
               const res = await axios.get(`http://localhost:5000/api/v1/products/${id}`);
               setProduct(res.data.data.product);
-              console.log(res.data.data.product)
           }catch(e) {
             console.log(e)
           }

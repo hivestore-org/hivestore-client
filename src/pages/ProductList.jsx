@@ -8,6 +8,7 @@ import Footer from './../components/Footer';
 import { mobile } from '../responsive';
 import { useLocation } from 'react-router-dom';
 
+
 const Container = styled.div``;
 
 const Title = styled.h1`
