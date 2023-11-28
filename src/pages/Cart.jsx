@@ -9,7 +9,6 @@ import { mobile } from '../responsive';
 import { useDispatch } from 'react-redux';
 import { addCartItem, increase, removeFromCart } from '../redux/Cart/cartSlice';
 import { popularProducts } from '../data';
-import { CartProduct } from '../components/cartProduct';
 import { CartSummary } from '../components/CartSummary';
 import { Link } from 'react-router-dom';
 // import StripeCheckout from "react-stripe-checkout";
