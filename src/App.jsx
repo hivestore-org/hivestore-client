@@ -13,39 +13,29 @@ import AdminProduct from '../src/admin/pages/product/Product';
 import AdminProductList from '../src/admin/pages/productList/ProductList';
 import AdminUser from '../src/admin/pages/user/User';
 import AdminUserList from '../src/admin/pages/userList/UserList';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import axios from 'axios';
+import { logout } from './redux/Authentication/authSlice';
+import { Success } from './pages/Success';
 
   
 
 function App() {
-  const cartItems = useSelector((state) => state.cart.cartItems);
-  console.log(cartItems);
-  const anonymousCart = JSON.parse(localStorage.getItem('cart'));
-  console.log(anonymousCart)
   const user = useSelector(state => state.auth.user);
-  console.log(user);
+  const dispatch = useDispatch();
   useEffect(() => {
-    if(user) {
-      if(cartItems) {
-        const mergeCarts = async () => {
-          let authTokens = localStorage.getItem("token");
-          try {
-            const response = await axios.post(`http://localhost:5000/api/v1/cart/`, cartItems, {
-              headers: {
-                Authorization: `Bearer ${authTokens}`
-              }
-            });
-            return response.data;
-          } catch (e){
-            console.log(e);
-          }
-        }
-        mergeCarts();
-      }
+    const currentTimeStamp = Math.floor(Date.now() / 1000);
+    const tokenExpiration = localStorage.getItem('tokenExpiration');
+
+    if(currentTimeStamp && tokenExpiration > tokenExpiration) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('tokenExpiration');
+
+      dispatch(logout());
     }
-  }, [user]);
+  }, [])
+
   const UnAuthLayout = () => {
     return (
       <div className="App">
@@ -67,7 +57,7 @@ function App() {
     const navigate = useNavigate();
     const isAdmin = useSelector(state => state.adminAuth.user);
     
-    useEffect(()=> {
+    useEffect(() => {
       if(!isAdmin) {
         navigate('/admin/login')
       }
@@ -113,6 +103,10 @@ function App() {
           path: '/cart',
           element: <Cart />,
         },
+        {
+          path: '/success',
+          element: <Success />,
+        },
       ],
     },
     {
@@ -145,7 +139,7 @@ function App() {
         },
         {
           path: '/admin/user',
-          element: <adminUser />
+          element: <AdminUser />
         },
         {
           path: '/admin/user-list',

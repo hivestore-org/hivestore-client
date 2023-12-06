@@ -28,10 +28,10 @@ export const Products = ({ cat, filters, sort }) => {
     useEffect(() => {
       const getProducts = async () => {
         try {
-          const res = await axios.get(cat ? `http://localhost:5000/api/v1/products?category=${cat}` : `http://localhost:5000/api/v1/products`);
+          const res = await axios.get(cat ? `${import.meta.env.VITE_API_DOMAIN}/api/v1/products?category=${cat}` : `${import.meta.env.VITE_API_DOMAIN}/api/v1/products`);
           // const res = await axios.get(`http://localhost:5000/api/v1/products`);
           setProducts(res.data);
-          console.log(res.data);
+  
 
         } catch(error) { 
           console.log(error.message)

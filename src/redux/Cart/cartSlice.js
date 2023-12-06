@@ -2,11 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { addItemToCart } from "./cartActions";
 
 const getCartItemsFromLocalStorage = JSON.parse(localStorage.getItem("cart")) || [];
-const getTotalQuantityFromLocalStorage = JSON.parse(localStorage.getItem("totalQuantity")) || 0;
+
+let total_quantity = getCartItemsFromLocalStorage.length;
 
 const initialState = {
-    cartItems : {products: getCartItemsFromLocalStorage},
-    totalQuantity: getTotalQuantityFromLocalStorage,
+    cartItems : { products: getCartItemsFromLocalStorage },
+    totalQuantity: total_quantity,
     isLoading: true,
     error: false,
     message: '',
@@ -20,7 +21,7 @@ const cartSlice = createSlice({
             const newItem = action.payload;
 
             //Check if item is already available
-            const existingItem = state.cartItems.products.find((item) => item.id === newItem.id);
+            const existingItem = state.cartItems.products.find((item) => item._id === newItem._id);
 
             if (existingItem) {
                 existingItem.quantity++;
@@ -29,7 +30,7 @@ const cartSlice = createSlice({
                 state.cartItems.products = [
                     ...state.cartItems.products,
                    {
-                        id: newItem.id,
+                        _id: newItem._id,
                         price: newItem.price,
                         quantity: 1,
                         totalPrice: newItem.price,
@@ -44,25 +45,33 @@ const cartSlice = createSlice({
                 localStorage.setItem("totalQuantity", JSON.stringify(state.totalQuantity));
             }
             state.isLoading = false;
-            console.log(localStorage.setItem("cart", JSON.stringify(state.cartItems.products)));
+            localStorage.setItem("cart", JSON.stringify(state.cartItems.products));
            
         },
         increase(state, { payload }) {
-            const cartItem = state.cartItems.products.find(item => { item.id === payload.id });
+            const cartItem = state.cartItems.products.find(item =>  item._id === payload._id );
+
            if (cartItem) {
             cartItem.quantity++;
+            cartItem.totalPrice = cartItem.price * cartItem.quantity;
            }
+           state.isLoading = false;
+           localStorage.setItem("cart", JSON.stringify(state.cartItems.products));
         },
         removeFromCart(state, action) {
             const id = action.payload;
 
-            const existingItem = state.cartItems.products.find(item => item.id === id);
+            const existingItem = state.cartItems.products.find(item => item._id === id);
             if (existingItem.quantity === 1) {
-                state.cartItems = state.cartItems.products.filter(item => item.id !== id)
+                state.cartItems.products = state.cartItems.products.filter(item => item._id !== id)
+                state.totalQuantity--;
             } else {
                 existingItem.quantity--;
-                existingItem.totalPrice -= existingItem.price;
+                existingItem.totalPrice = existingItem.price * existingItem.quantity;
             }
+            state.isLoading = false;
+           localStorage.setItem("cart", JSON.stringify(state.cartItems.products));
+           
         },
         setShowCart(state) {
             state.showCart = true;

@@ -9,9 +9,9 @@ export const addItemToCart = createAsyncThunk(
     'cart/addToCart/userId',
     async (userData, thunkAPI) => {
         let authTokens = localStorage.getItem("token");
-        console.log('about to async some shitt')
+        
         try {
-            const res =  await axios.post(`${baseUrl}/api/v1/cart/${user.user._id}`, userData, {
+            const res =  await axios.post(`${import.meta.env.VITE_API_DOMAIN}/api/v1/cart/${user.user._id}`, userData, {
                 headers: {
                     Authorization: `Bearer ${authTokens}`,
                 }

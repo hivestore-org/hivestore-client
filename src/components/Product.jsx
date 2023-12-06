@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { addCartItem } from "../redux/Cart/cartSlice"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Info = styled.div`
   opacity: 0;
@@ -94,22 +96,27 @@ export const Product = ({ item }) => {
   // console.log(item)
   const dispatch = useDispatch();
   const addToCart = () => {
+    
       dispatch(addCartItem({
           name: item.title,
-          id: item._id,
+          _id: item._id,
           price: item.price,
           imgUrl: item.image,
           size: item.size,
           color: item.color,
         })
       );
+      toast.success('Item has been successfully added to your cart!', {
+        position: toast.POSITION.TOP_CENTER,
+      });
   };
   return (
     <Container>
       {/* <Circle/> */}
+      <ToastContainer />
       <Wrap>
         <RedLabel />
-        <Image src={`http://localhost:5000/img/products/${item.image}`} />
+        <Image src={`${import.meta.env.VITE_API_DOMAIN}/img/products/${item.image}`} />
         <Info>
           <Icon onClick={addToCart}>
             <ShoppingCartOutlined />

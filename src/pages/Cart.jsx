@@ -7,8 +7,10 @@ import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import { mobile } from '../responsive';
 import { useDispatch } from 'react-redux';
-import { addCartItem, removeFromCart } from '../redux/Cart/cartSlice';
+import { addCartItem, increase, removeFromCart } from '../redux/Cart/cartSlice';
 import { popularProducts } from '../data';
+import { CartSummary } from '../components/CartSummary';
+import { Link } from 'react-router-dom';
 // import StripeCheckout from "react-stripe-checkout";
 // import { userRequest } from '../requestMethods';
 
@@ -127,53 +129,26 @@ const ProductPrice = styled.div`
   ${mobile({ marginBottom: '20px' })};
 `;
 
+
+
 const Hr = styled.hr`
   background-color: #eee;
   border: none;
   height: 1px;
 `;
 
-const Summary = styled.div`
-  flex: 1;
-  border: 0.5px solid lightgray;
-  border-radius: 10px;
-  padding: 20px;
-  height: auto;
-`;
-
-const SummaryTitle = styled.h1`
-  font-weight: 200;
-`;
-
-const SummaryItem = styled.div`
-  margin: 30px 0px;
-  display: flex;
-  justify-content: space-between;
-  font-weight: ${(props) => props.type === 'total' && '500'};
-  font-size: ${(props) => props.type === 'total' && '24px'};
-`;
-
-const SummaryItemText = styled.span``;
-
-const SummaryItemPrice = styled.span``;
-
-const Button = styled.button`
-  width: 100%;
-  padding: 10px;
-  background-color: black;
-  color: white;
-  font-weight: 600;
-`;
-
 export const Cart = () => {
   const { cartItems, totalQuantity } = useSelector(state => state.cart);
-  console.log(cartItems)
-
   const dispatch = useDispatch();
+  const items = cartItems.products;
+  
+
   const incrementCartItem = (item) => {
-    const existingItem = cartItems.find(cartItem => cartItem.id === item.id);
-    dispatch(addCartItem({ ...item, quantity: existingItem.quantity + 1 }));
+    const existingItem = items.find(cartItem => cartItem._id === item._id);
+    dispatch(increase({ ...item, quantity: existingItem.quantity + 1 }))
+    // dispatch(addCartItem({ ...item, quantity: existingItem.quantity + 1 }));
   };
+
   const decrementCartItem = (itemId) => {
     dispatch(removeFromCart(itemId));
   };
@@ -220,7 +195,9 @@ export const Cart = () => {
       <Wrapper>
         <Title>YOUR BAG</Title>
         <Top>
-          <TopButton>CONTINUE SHOPPING</TopButton>
+          <Link to="/product-list/">
+            <TopButton>CONTINUE SHOPPING</TopButton>
+          </Link>
           <TopTexts>
             <TopText>Shopping Bag({totalQuantity})</TopText>
             <TopText>Your Whishlist(0)</TopText>
@@ -229,13 +206,13 @@ export const Cart = () => {
         </Top>
         <Bottom>
           <Info>
-            { cartItems.map(item => (
-                        <Product key={item.id}>
+          { items.map(item => (
+                    <Product key={item._id}>
                         <ProductDetail>
-                            <Image src={`http://localhost:5000/img/products/${item.imgUrl}`} />
+                            <Image src={`${import.meta.env.VITE_API_DOMAIN}/img/products/${item.imgUrl}`} />
                             <Details>
                                 <ProductName><b>Product:</b> {item.name} </ProductName>
-                            <ProductId><b>ID:</b> {item.id}</ProductId>
+                            <ProductId><b>ID:</b> {item._id}</ProductId>
                                 <ProductColor color = {item.color}/>
                                 <ProductSize><b>Size:</b> {item.size} </ProductSize>
                             </Details>
@@ -244,46 +221,15 @@ export const Cart = () => {
                             <ProductAmountContainer>
                                 <Add onClick={() => incrementCartItem(item)}/>   
                                 <ProductAmount>{item.quantity}</ProductAmount> 
-                                <Remove onClick={() => decrementCartItem(item.id)}/>
+                                <Remove onClick={() => decrementCartItem(item._id)}/>
                             </ProductAmountContainer>
                             <ProductPrice>$ {item.price * item.quantity}</ProductPrice>
                         </PriceDetail>
                     </Product>
-                    ))} 
-            
+                    ))
+            } 
           </Info>
-          <Summary>
-            <SummaryTitle>ORDER SUMMARY</SummaryTitle>
-            <SummaryItem>
-              <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ 200</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>$ 5.90</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText type="total">Total</SummaryItemText>
-              <SummaryItemPrice>$ 100</SummaryItemPrice>
-            </SummaryItem>
-            {/* <StripeCheckout
-                        name="Gospel Shop"
-                        image=''
-                        billingAddress
-                        shippingAddress
-                        description={`Your total is $${cart.total}`}
-                        amount={cart.total * 100} //STRIPE WORKS WITH CENTS
-                        token={onToken}
-                        stripeKey={KEY}
-                    > */}
-
-            <Button>CHECKOUT NOW</Button>
-            {/* </StripeCheckout> */}
-          </Summary>
+          <CartSummary />
         </Bottom>
       </Wrapper>
       <Footer />

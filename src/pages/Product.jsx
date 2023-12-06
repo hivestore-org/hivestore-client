@@ -114,7 +114,7 @@ const Button = styled.button`
 
 export const Product = () => {
   const user = useSelector(state => state.auth);
-  console.log(user)
+  
   const location = useLocation(); // returns an object that contains the pathname
   const id = location.pathname.split('/')[2];
 
@@ -128,9 +128,8 @@ export const Product = () => {
   useEffect(() => {
       const getProduct = async () => {
           try {
-              const res = await axios.get(`http://localhost:5000/api/v1/products/${id}`);
+              const res = await axios.get(`${import.meta.env.VITE_API_DOMAIN}/api/v1/products/${id}`);
               setProduct(res.data.data.product);
-              console.log(res.data.data.product)
           }catch(e) {
             console.log(e)
           }
@@ -147,7 +146,7 @@ export const Product = () => {
   }
 
   const addToCart = () => {
-    console.log("clicked!!!")
+    
     if (user) {
       dispatch(addItemToCart({ 
         product: {
@@ -179,7 +178,7 @@ export const Product = () => {
       <Announcement />
       <Wrapper>
         <ImgContainer>
-          <Image src={`http://localhost:5000/img/products/${product.image}`} />
+          <Image src={`${import.meta.env.VITE_API_DOMAIN}/img/products/${product.image}`} />
         </ImgContainer>
         <InfoContainer>
           <Title>{product.title}</Title>
