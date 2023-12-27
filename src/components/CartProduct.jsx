@@ -58,7 +58,7 @@ const ProductPrice = styled.div`
 
 
 export const CartProduct = ({ cartItems, cartIncrement, cartDecrement }) => {
-  console.log(cartItems)
+  // console.log(cartItems)
     return (
         <>
             { cartItems.map(item => (

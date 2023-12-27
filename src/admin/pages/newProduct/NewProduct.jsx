@@ -34,7 +34,11 @@ export default function AdminNewProduct() {
             }
            
             try {
-                const response = await axios.post('http://localhost:5000/api/v1/products/', formData);
+                const authTokens = localStorage.getItem('token');
+                const response = await axios.post(`${import.meta.env.VITE_API_DOMAIN}/api/v1/products/`, formData, {
+                    headers: {
+                        Authorization: `Bearer ${authTokens}`,
+                    }});
                 if (response) {
                     toast.success('A Product has been successfully added!', {
                         position: toast.POSITION.TOP_CENTER
