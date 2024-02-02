@@ -64,7 +64,7 @@ export const CartProduct = ({ cartItems, cartIncrement, cartDecrement }) => {
             { cartItems.map(item => (
                     <Product key={item.id}>
                         <ProductDetail>
-                            <Image src={`${import.meta.env.VITE_API_DOMAIN}/img/products/${item.imgUrl}`} />
+                            <Image src={item.imgUrl} />
                             <Details>
                                 <ProductName><b>Product:</b> {item.name} </ProductName>
                             <ProductId><b>ID:</b> {item.id}</ProductId>
