@@ -116,7 +116,7 @@ export const Product = ({ item }) => {
       <ToastContainer />
       <Wrap>
         <RedLabel />
-        <Image src={`${import.meta.env.VITE_API_DOMAIN}/img/products/${item.image}`} />
+        <Image src={item.image} />
         <Info>
           <Icon onClick={addToCart}>
             <ShoppingCartOutlined />

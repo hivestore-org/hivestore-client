@@ -6,16 +6,18 @@ import { useFormik, Form, Field, ErrorMessage } from 'formik';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { uploadImgHook } from '../../../firebase/firebase'; 
 
 export default function AdminNewProduct() {
     const [sku, setSku] = useState('');
+    const [progress, setProgress] = useState(0);
    
     const formik = useFormik({
         initialValues: {
             title: '',
             sku: '',
             description: '',
-            image: '',
+            image: null,
             categoriesString: '',
             sizeString: '',
             colorString: '',
@@ -27,31 +29,39 @@ export default function AdminNewProduct() {
             values.sku = sku;
             setSku('');
             
-            resetForm();
-            const formData = new FormData();
-            for ( let value in values ) {
-                formData.append(value, values[value])
-            }
-           
             try {
+                const downloadURL = await uploadImgHook(values.image, setProgress);
+                const formData = {
+                    title: values.title,
+                    sku: values.sku,
+                    description: values.description,
+                    image: downloadURL,
+                    categoriesString: values.categoriesString,
+                    sizeString: values.sizeString,
+                    colorString: values.colorString,
+                    price: values.price,
+                    inStock: values.inStock,
+                    taxable: values.taxable
+                }
                 const authTokens = localStorage.getItem('token');
                 const response = await axios.post(`${import.meta.env.VITE_API_DOMAIN}/api/v1/products/`, formData, {
                     headers: {
                         Authorization: `Bearer ${authTokens}`,
                     }});
-                if (response) {
+               
                     toast.success('A Product has been successfully added!', {
                         position: toast.POSITION.TOP_CENTER
                     });
-                }
                 
+                resetForm();
+                setProgress(0)
                 console.log(response.data)
             } catch (err) {
-                if(err) {
+                
                     toast.error(`An error occured!`, {
                         position: toast.POSITION.TOP_CENTER
                     });
-                }
+              
                 console.error(err);
             }
         }
@@ -109,6 +119,7 @@ export default function AdminNewProduct() {
                             <label htmlFor="image">Image</label>
                             <input type="file" id='image' name='image' accept='image/*' onChange={(e) => formik.setFieldValue('image', e.currentTarget.files[0])} />
                             {/* <ErrorMessage name='image' component='div' /> */}
+                            <progress value={progress} max="100" />
                         </div>
                         <div className="addProductItem">
                             <label htmlFor="title">Title:</label>
@@ -142,12 +153,12 @@ export default function AdminNewProduct() {
                         </div>
                         <div className="addProductItem">
                             <label htmlFor="inStock">In Stock:</label>
-                            <input type="checkbox" id='inStock' name='inStock' value={formik.values.inStock} onChange={formik.handleChange} placeholder='123' />
+                            <input type="checkbox" id='inStock' name='inStock' checked={formik.values.inStock} onChange={(e) => formik.setFieldValue('inStock', e.target.checked)} placeholder='123' />
                             {/* <ErrorMessage name='inStock' component='div' /> */}
                         </div>
                         <div className="addProductItem">
                             <label htmlFor="inStock">Taxable:</label>
-                            <input type="checkbox" id='taxable' name='taxable' value={formik.values.taxable} onChange={formik.handleChange} placeholder='123' />
+                            <input type="checkbox" id='taxable' name='taxable' checked={formik.values.taxable} onChange={(e) => formik.setFieldValue('taxable', e.target.checked)} placeholder='123' />
                             {/* <ErrorMessage name='taxable' component='div' /> */}
                         </div>
                         <button type='submit' className='addProductButton'>Add Product</button>

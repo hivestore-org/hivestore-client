@@ -178,7 +178,7 @@ export const Product = () => {
       <Announcement />
       <Wrapper>
         <ImgContainer>
-          <Image src={`${import.meta.env.VITE_API_DOMAIN}/img/products/${product.image}`} />
+          <Image src={product.image} />
         </ImgContainer>
         <InfoContainer>
           <Title>{product.title}</Title>

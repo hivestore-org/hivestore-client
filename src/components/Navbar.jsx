@@ -246,7 +246,9 @@ export default function Navbar() {
             <Link to="/product-list/women" style={{ textDecoration: "none" }}>
               <NavListItem>Women</NavListItem>
             </Link>
-            <NavListItem>Accessories</NavListItem>
+            <Link to="/product-list/accessories" style={{ textDecoration: "none" }}>
+              <NavListItem>Accessories</NavListItem>
+            </Link>
           </NavList>
         </Center>
 
