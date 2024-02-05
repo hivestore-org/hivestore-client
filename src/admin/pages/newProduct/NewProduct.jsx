@@ -55,7 +55,6 @@ export default function AdminNewProduct() {
                 
                 resetForm();
                 setProgress(0)
-                console.log(response.data)
             } catch (err) {
                 
                     toast.error(`An error occured!`, {
