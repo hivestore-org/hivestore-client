@@ -61,8 +61,9 @@ export const CartSummary = () => {
                 Authorization: `Bearer ${authTokens}`,
             }
         });
-          if (!response) throw new Error("There is an error with the request")
-          console.log(response, "or nothing")
+          if (!response) {
+            throw new Error("There is an error with the request");
+          }
       
           if (response.status === 200) {
             console.log("Products added to the database successfully.");
@@ -72,7 +73,6 @@ export const CartSummary = () => {
                   Authorization: `Bearer ${authTokens}`,
               }
             });
-            console.log(getResponse);
             const checkout = await userRequest.post('/v1/checkout', { getResponse }, {
               headers: {
                 Authorization: `Bearer ${authTokens}`,
@@ -81,8 +81,8 @@ export const CartSummary = () => {
             if(!checkout) {
               throw new Error("There is an error with the request");
             } else {
-              window.location = checkout.data.url;
-              
+              const checkoutUrl = checkout.data.url;
+              window.open(checkoutUrl, '_blank');
             }
           } else {
             console.error("Server returned an error:", response.statusText)
@@ -91,7 +91,8 @@ export const CartSummary = () => {
           console.warn("No products found in the cart.")
         }
       } catch(error) {
-        console.error("An error occurred while making the request:", error.message)
+        console.error("An error occurred while making the request:", error.message);
+        alert("Cart Transaction already exists");
       }
     }
   };
@@ -126,7 +127,7 @@ export const CartSummary = () => {
                         stripeKey={KEY}
                     > */}
 
-            <Button onClick={checkout}>CHECKOUT NOW</Button>
+            <Button target="_blank" onClick={checkout}>CHECKOUT NOW</Button>
             {/* </StripeCheckout> */}
           </Summary>
     )
