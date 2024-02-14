@@ -30,6 +30,7 @@ const fontStyle = {
 };
 
 const Container = styled.div`
+  padding: 0px 20px;
   height: 80px;
   font-family: 'Urbanist', sans-serif;
   border-bottom: 1px solid #f5f5f5;
@@ -169,7 +170,7 @@ const MenuItem = styled.div`
   margin-right: 10px;
   text-decoration: none;
   background-color: transparent;
-  border: 1px solid #f5f5f5;
+  border: 3px solid #f5f5f5;
   padding: 10px;
   width: 100px;
   text-align: center;
@@ -275,9 +276,9 @@ export default function Navbar() {
               </NavLink>
             </>
           ) : (
-            <Link to="/">
+            <NavLink to="/">
               <MenuItem onClick={handleLogout}>LOGOUT</MenuItem>
-            </Link>
+            </NavLink>
           )}
 
           <MenuIcon
@@ -289,6 +290,7 @@ export default function Navbar() {
           </MenuIcon>
         </Right>
       </Wrapper>
+      
       <MobileMenu openMenu={openMenu}>
         <PrePanel>
           <CloseBtn
@@ -311,12 +313,24 @@ export default function Navbar() {
             <ArrowForwardIos style={fontStyle} />
           </NavBtn>
           <MobileBtnCon>
-            <MobileMenuBtn>Join Us</MobileMenuBtn>
-            <MobileMenuBtn>Sign In</MobileMenuBtn>
+          {user === null ? (
+            <>
+              <NavLink to="/register">
+                <MobileMenuBtn>Join Us</MobileMenuBtn>
+              </NavLink>
+              <NavLink to="/login">
+                <MobileMenuBtn>Sign In</MobileMenuBtn>
+              </NavLink>
+            </>
+          ) : (
+            <NavLink to="/">
+              <MobileMenuBtn onClick={handleLogout}>LOGOUT</MobileMenuBtn>
+            </NavLink>
+          )}
           </MobileBtnCon>
           <MobileCart>
             <Badge
-              badgeContent={2}
+              badgeContent={totalQuantity}
               sx={badgeStyle}
             >
               <ShoppingBagOutlined

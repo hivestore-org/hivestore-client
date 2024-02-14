@@ -7,6 +7,7 @@ const Container = styled.div`
   display: flex;
   width: 100%;
   margin: 3px;
+  justify-contents: center;
   height: 70vh;
   position: relative;
   ${mobile({ height: '40vh' })};
@@ -24,8 +25,8 @@ const Overlay = styled.div`
 `;
 
 const Image = styled.img`
-  max-width: 100%;
-  height: auto;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 `;
 const Info = styled.div`
@@ -60,14 +61,14 @@ const Button = styled.button`
 export const CategoryItem = ({ item }) => {
   return (
     <Container>
-      <Link to={`/product-list/${item.cat}`}>
       <Overlay></Overlay>
       <Image src={item.img} />
       <Info>
         <Title>{item.title}</Title>
+        <Link to={`/product-list/${item.cat}`}>
         <Button>SHOP NOW</Button>
-      </Info>
       </Link>
+      </Info>
     </Container>
   );
 };

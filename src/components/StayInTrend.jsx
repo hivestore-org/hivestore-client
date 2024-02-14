@@ -44,6 +44,7 @@ const BoxImage = styled.img``;
 const BoxHeading = styled.h3`
   font-size: 24px;
   color: #393d46;
+  margin-bottom: 10px;
 `;
 const BoxParagraph = styled.p`
   font-size: 15px;
@@ -79,31 +80,30 @@ export default function StayInTrend() {
             Our designs follow the latest fashion styles to help you stay
             updated with new trends.
           </BoxParagraph>
-          <BoxButton>Read More</BoxButton>
+          {/* <BoxButton>Read More</BoxButton> */}
         </Box>
         <Box>
           <BoxImage
             src={icon2}
             alt="icon"
           />
-          <BoxHeading>Latest Styles</BoxHeading>
+          <BoxHeading>Fresh Fashion Trends</BoxHeading>
           <BoxParagraph>
-            Our designs follow the latest fashion styles to help you stay
-            updated with new trends.
+          Stay ahead of the curve with our fashion-forward designs, 
+          crafted to embody the latest trends and styles.
           </BoxParagraph>
-          <BoxButton>Read More</BoxButton>
+          {/* <BoxButton>Read More</BoxButton> */}
         </Box>
         <Box>
           <BoxImage
             src={icon3}
             alt="icon"
           />
-          <BoxHeading>Latest Styles</BoxHeading>
+          <BoxHeading>Trendsetting Designs</BoxHeading>
           <BoxParagraph>
-            Our designs follow the latest fashion styles to help you stay
-            updated with new trends.
+          Explore our collection to elevate your wardrobe and make a statement wherever you go.
           </BoxParagraph>
-          <BoxButton>Read More</BoxButton>
+          {/* <BoxButton>Read More</BoxButton> */}
         </Box>
       </BoxContainer>
     </Container>

@@ -35,12 +35,14 @@ const Input = styled.input`
   border: none;
   flex: 8;
   padding-left: 20px;
+  outline: none;
 `;
 const Button = styled.button`
   flex: 1;
   background-color: teal;
   color: white;
   border: none;
+  cursor: pointer;
 `;
 
 export const Newsletter = () => {

@@ -31,7 +31,6 @@ function App() {
     if(currentTimeStamp && tokenExpiration > tokenExpiration) {
       localStorage.removeItem('token');
       localStorage.removeItem('tokenExpiration');
-
       dispatch(logout());
     }
   }, [])
