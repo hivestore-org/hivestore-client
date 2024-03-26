@@ -1,63 +1,200 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { mobile } from '../responsive';
+import styled, { keyframes } from 'styled-components';
+import { mobile, semiMedium } from '../responsive';
 import { useDispatch, useSelector } from 'react-redux';
 // import setToken from './../utils/token';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../redux/Authentication/authActions';
 import { reset } from '../redux/Authentication/authSlice';
+// import backgroundImg from '../images/bg-sidebar-desktop.svg';
+import backgroundImg  from '../images/backgroundImg.jpg';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(
-      rgba(255, 255, 255, 0.8),
-      rgba(255, 255, 255, 0.8)
-    ),
-    url('https://i.ibb.co/4fgmSSB/avatar-g1b3afb5f3-1920.png') center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${semiMedium({ 
+    background: `linear-gradient(
+    rgba(0, 0, 0, 0.5),
+    rgba(0, 0, 0, 0.9)
+  ), url('${backgroundImg}')`, 
+    backgroundSize: '100%', 
+    backgroundPosition: 'center', 
+    backgroundRepeat: 'no-repeat', 
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  
+  })};
 `;
 const Wrapper = styled.div`
-  padding: 30px;
-  width: 40%;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
   background: #ffffff;
   box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
-  ${mobile({ width: '75%' })};
+  ${semiMedium({padding: '20px', justifyContent: 'center', alignItems: 'center', boxShadow: 'none', height: 'auto', width: '400px', })};
+  ${mobile({ width: '300px' })};
 `;
+
+const Banner = styled.div`
+    background-image: linear-gradient(
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.9)
+    ), url('${backgroundImg}');
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    background-size: 100%;
+    background-position: center;
+
+    flex: 1;
+
+    ${semiMedium({ display: 'none' })};
+`;
+
+const WelcomeText = styled.h3`
+    color: hsl(0, 0%, 100%);
+    padding-left: 30px;
+    letter-spacing: 10px;
+    font-size: 30px;
+    line-height: 3.5rem;
+`;
+
+const FormWrapper = styled.div`
+    flex: 1;
+    display: flex;
+    background: #ffffff;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    ${semiMedium({ flex: '0' })};
+`;
+const FormContainer = styled.div`
+    // border: 1px solid hsl(231, 11%, 63%);
+    border-radius: 5px;
+    padding: 20px;
+    width: 350px;
+
+    ${semiMedium({ 
+      width: '300px'
+     })};
+
+     ${mobile({ width: '250px' })};
+`;
+
 const Title = styled.h1`
-  font-size: 24px;
-  font-weight: 300;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-align: center;
+
+  ${semiMedium({ fontSize: '22px' })};
 `;
 const Form = styled.form`
-  display: flex;
-  flex-wrap: wrap;
+ 
 `;
+
+const InputLabel = styled.label`
+    letter-spacing: 1px;
+    font-size: 14px;
+`;
+
 const Input = styled.input`
   flex: 1;
-  min-width: 40%;
-  margin: 20px 10px 0px 0px;
-  padding: 10px;
+  width: 100%;
+  margin: 10px 10px 8px 0px;
+  padding: 15px;
+  border: 1px solid hsl(231, 11%, 63%);
+  border-radius: 5px;
+  outline: none;
+
+  ::placeholder {
+    color: hsl(231, 11%, 63%);
+  }
+
+  &:focus {
+    border-color: teal;
+    border-width: 1px;
+    color: teal;
+  }
+
+  ${semiMedium({ 
+    padding: '10px',
+   })};
 `;
 
 const ErrorMessage = styled.span`
   color: red;
-  margin-top: 10px;
+  margin-bottom: 10px;
   display: block;
+  font-size: 12px;
 `;
+
+const spin = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
+const Loader = styled.div`
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #FFFFFF;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  text-align: center;
+  animation: ${spin} 1s linear infinite;
+`;
+
+const Label = styled.label`
+  font-size: 16px;
+
+  & > a {
+    text-decoration: none;
+    color: teal;
+  }
+`;
+
 
 const Agreement = styled.span`
   font-size: 12px;
   margin: 20px 0px;
-`;
+ `;
+
+ const Checkbox = styled.input`
+  margin-right: 10px;
+ `;
+
 const Button = styled.button`
     border: none;
-    width: 40%;
+    width: 100%;
     padding 15px 20px;
     background-color: teal;
     color: white;
-    cursor: pointer;
+    cursor: ${props => props.disable ? "pointer" : "not-allowed"};
+    border-radius: 5px;
+    opacity: ${props => props.disable ? "none" : "0.4"};
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const FormLink = styled.a`
+  margin-top: 10px;
+  font-size: 12px;
+  cursor: pointer;
+  display: block;
+
+  &:hover {
+    color: teal;
+    font-weight: 500;
+  }
 `;
 
 const defaultFormFields = {
@@ -70,9 +207,11 @@ const defaultFormFields = {
 export const Register = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const [formError, setFormError] = useState({});
-  const { user, error, success, message } = useSelector((state) => state.auth);
+  const { user, loading, error, success, message } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isChecked, setIsChecked] = useState(false);
+
 
   useEffect(() => {
     if (error) {
@@ -88,6 +227,48 @@ export const Register = () => {
     };
   }, [error, message, user, success, navigate]);
 
+  const handleSignUp = () => {
+    const errors = validateInputs();
+    setFormError(errors);
+    if(errors) {
+      setIsChecked(false)
+    } else {
+      setIsChecked(true)
+    }
+
+  }
+
+  const validateInputs = () => {
+      const fullName = document.getElementById('fullName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const confirmPassword = document.getElementById('confirmPassword').value.trim();
+      
+      let errors = {};
+    
+      if (fullName === '') {
+        errors = { ...errors, fullName: 'Your Full Name is Required' };
+      }
+    
+      if (email === '') {
+        errors = { ...errors, email: 'Your Email is Required' };
+      }
+    
+      if (password === '') {
+        errors = { ...errors, password: 'Your Password is Required' };
+      }
+    
+      if (confirmPassword === '') {
+        errors = { ...errors, confirmPassword: 'Confirm Your Password' };
+      }
+    
+      return errors;
+    };
+
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+  };
+
   const handleError = (message) => {
     //   alert(message);
     const messageObj = JSON.parse(message);
@@ -97,6 +278,12 @@ export const Register = () => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormFields({ ...formFields, [name]: value });
+
+  if(value !== '') {
+    setIsChecked(true);
+  } else {
+    setIsChecked(false);
+  }
   };
 
   const handleSubmit = (event) => {
@@ -106,48 +293,72 @@ export const Register = () => {
 
   return (
     <Container>
-      <Wrapper>
-        <Title>CREATE AN ACCOUNT</Title>
-        <Form onSubmit={handleSubmit}>
-          <Input
-            type="text"
-            placeholder="fullname"
-            name="fullName"
-            value={formFields.fullName}
-            onChange={handleInputChange}
-          />
-          <ErrorMessage>{formError.fullName}</ErrorMessage>
-          <Input
-            type="email"
-            placeholder="email"
-            name="email"
-            value={formFields.email}
-            onChange={handleInputChange}
-          />
-          <ErrorMessage>{formError.email}</ErrorMessage>
-          <Input
-            type="password"
-            placeholder="password"
-            name="password"
-            value={formFields.password}
-            onChange={handleInputChange}
-          />
-          <ErrorMessage>{formError.password}</ErrorMessage>
-          <Input
-            type="password"
-            placeholder="confirm password"
-            name="confirmPassword"
-            value={formFields.confirmPassword}
-            onChange={handleInputChange}
-          />
-          <ErrorMessage>{formError.confirmPassword}</ErrorMessage>
-          <Agreement>
-            By creating an account, I consent to the processing of my personal
-            data in accordance with the <b>PRIVACY POLICY</b>
-          </Agreement>
-          <Button type="submit">CREATE</Button>
-        </Form>
-      </Wrapper>
+          <Wrapper>
+            <Banner>
+              <WelcomeText>Welcome to Hivestore <br/> Join us Now!</WelcomeText>
+            </Banner>
+            <FormWrapper>
+            <FormContainer>
+              <Title>Create New Account</Title>
+              <Form onSubmit={handleSubmit}>
+                <InputLabel htmlFor="fullname">Full Name <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 384 512"><path d="M192 32c17.7 0 32 14.3 32 32V199.5l111.5-66.9c15.2-9.1 34.8-4.2 43.9 11s4.2 34.8-11 43.9L254.2 256l114.3 68.6c15.2 9.1 20.1 28.7 11 43.9s-28.7 20.1-43.9 11L224 312.5V448c0 17.7-14.3 32-32 32s-32-14.3-32-32V312.5L48.5 379.4c-15.2 9.1-34.8 4.2-43.9-11s-4.2-34.8 11-43.9L129.8 256 15.5 187.4c-15.2-9.1-20.1-28.7-11-43.9s28.7-20.1 43.9-11L160 199.5V64c0-17.7 14.3-32 32-32z" fill="red" /></svg></InputLabel>
+                <Input
+                  type="text"
+                  placeholder="Enter Your Full Name"
+                  name="fullName"
+                  id="fullName"
+                  value={formFields.fullName}
+                  onChange={handleInputChange}
+                />
+                <ErrorMessage>{formError.fullName}</ErrorMessage>
+
+                <InputLabel htmlFor="email">Email <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 384 512"><path d="M192 32c17.7 0 32 14.3 32 32V199.5l111.5-66.9c15.2-9.1 34.8-4.2 43.9 11s4.2 34.8-11 43.9L254.2 256l114.3 68.6c15.2 9.1 20.1 28.7 11 43.9s-28.7 20.1-43.9 11L224 312.5V448c0 17.7-14.3 32-32 32s-32-14.3-32-32V312.5L48.5 379.4c-15.2 9.1-34.8 4.2-43.9-11s-4.2-34.8 11-43.9L129.8 256 15.5 187.4c-15.2-9.1-20.1-28.7-11-43.9s28.7-20.1 43.9-11L160 199.5V64c0-17.7 14.3-32 32-32z" fill="red" /></svg></InputLabel>
+                <Input
+                  type="email"
+                  placeholder="Enter Your Email"
+                  name="email"
+                  id="email"
+                  value={formFields.email}
+                  onChange={handleInputChange}
+                />
+                <ErrorMessage>{formError.email}</ErrorMessage>
+
+                <InputLabel htmlFor="password">Password <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 384 512"><path d="M192 32c17.7 0 32 14.3 32 32V199.5l111.5-66.9c15.2-9.1 34.8-4.2 43.9 11s4.2 34.8-11 43.9L254.2 256l114.3 68.6c15.2 9.1 20.1 28.7 11 43.9s-28.7 20.1-43.9 11L224 312.5V448c0 17.7-14.3 32-32 32s-32-14.3-32-32V312.5L48.5 379.4c-15.2 9.1-34.8 4.2-43.9-11s-4.2-34.8 11-43.9L129.8 256 15.5 187.4c-15.2-9.1-20.1-28.7-11-43.9s28.7-20.1 43.9-11L160 199.5V64c0-17.7 14.3-32 32-32z" fill="red" /></svg></InputLabel>
+                <Input
+                  type="password"
+                  placeholder="Enter Your Password"
+                  name="password"
+                  id="password"
+                  value={formFields.password}
+                  onChange={handleInputChange}
+                />
+                <ErrorMessage>{formError.password}</ErrorMessage>
+
+                <InputLabel htmlFor="confirmPassword">Re-Type Password <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 384 512"><path d="M192 32c17.7 0 32 14.3 32 32V199.5l111.5-66.9c15.2-9.1 34.8-4.2 43.9 11s4.2 34.8-11 43.9L254.2 256l114.3 68.6c15.2 9.1 20.1 28.7 11 43.9s-28.7 20.1-43.9 11L224 312.5V448c0 17.7-14.3 32-32 32s-32-14.3-32-32V312.5L48.5 379.4c-15.2 9.1-34.8 4.2-43.9-11s-4.2-34.8 11-43.9L129.8 256 15.5 187.4c-15.2-9.1-20.1-28.7-11-43.9s28.7-20.1 43.9-11L160 199.5V64c0-17.7 14.3-32 32-32z" fill="red" /></svg></InputLabel>
+                <Input
+                  type="password"
+                  placeholder="Confirm Your Password"
+                  name="confirmPassword"
+                  id="confirmPassword"
+                  value={formFields.confirmPassword}
+                  onChange={handleInputChange}
+                />
+                <ErrorMessage>{formError.confirmPassword}</ErrorMessage>
+
+                <Agreement>
+                  <Checkbox type="checkbox" onChange={handleCheckboxChange} />
+                  <Label>
+                    I agree with the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                  </Label>
+                </Agreement>
+                <Button onClick={handleSignUp} disabled = {!isChecked} disable = {isChecked} type="submit">
+                  { loading ? <Loader /> : 'SIGN UP' }
+                </Button>
+                <Link style={{ textDecoration: 'none' }} to = {'/login'}><FormLink>LOGIN</FormLink></Link>
+              </Form>
+            </FormContainer>
+            </FormWrapper>
+          </Wrapper>
     </Container>
   );
 };

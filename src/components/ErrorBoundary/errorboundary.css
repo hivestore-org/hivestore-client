@@ -1,0 +1,42 @@
+.card {
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    margin-bottom: 1.25rem; /* equivalent to my-5 in Bootstrap */
+  }
+  
+  .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ccc;
+    padding: 0.75rem 1.25rem;
+  }
+  
+  .card-body {
+    padding: 1.25rem;
+  }
+  
+  .error-details {
+    margin-top: 0.75rem;
+  }
+  
+  .error-details summary {
+    cursor: pointer;
+  }
+  
+  .error-details summary::-webkit-details-marker {
+    display: none;
+  }
+  
+  .error-details[open] summary::before {
+    content: "▼";
+    margin-right: 0.5rem;
+  }
+  
+  .error-details summary::before {
+    content: "►";
+    margin-right: 0.5rem;
+  }
+  
+  .error-details[open] {
+    margin-bottom: 1rem;
+  }
+  
