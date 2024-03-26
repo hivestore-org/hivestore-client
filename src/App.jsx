@@ -18,6 +18,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { logout } from './redux/Authentication/authSlice';
 import { Success } from './pages/Success';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
   
 
@@ -80,11 +81,11 @@ function App() {
         },
         {
           path: '/login',
-          element: <Login />,
+          element: <ErrorBoundary><Login /></ErrorBoundary>,
         },
         {
           path: '/register',
-          element: <Register />,
+          element: <ErrorBoundary><Register /></ErrorBoundary>,
         },
         {
           path: '/product/:id',
